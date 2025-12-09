@@ -76,7 +76,7 @@ def calculate_cathetus_length(a: int, c: int) -> float:
 if __name__ == '__main__':
     sum_and_difference(5,6)
     assert addition_result == 11
-    assert difference == -1
+    assert not -1 != difference
 
     float_division_result = float_division(10,10)
     assert isinstance(float_division_result, float)
@@ -95,3 +95,63 @@ if __name__ == '__main__':
     assert remainder == 0
     area_of_a_circle_result = area_of_a_circle(3)
     assert 28.269 < area_of_a_circle_result < 28.271, f""
+
+"""Koosta programm, mis küsib kasutajalt ristküliku lähiskülgede pikkused ning väljastab ekraanile
+ ristküliku ümbermõõdu ja pindala."""
+
+def compute_rectangle():
+    lenght = float(input("sisesta ristküliku pikkus"))
+    width = float(input("sisesta ristküliku laius"))
+    area = width * lenght
+    circumference = 2 * (lenght + width)
+    print(f"Antud ristküliku pindala on {area}")
+    print(f"ümbermõõt on {circumference}")
+
+    if __name__ == "__main__":
+        compute_rectangle()
+
+"""Koosta programm, mis küsib kasutajalt nime ja vanust ja väljastab ekraanile nimelise
+ tervituse koos tekstiga, mis ütleb kas tegemist on 7-18-aastase inimesega."""
+
+ def greet_by_name(name: str) -> str:
+     return f"Tervist {name}!"
+
+ def verify_age(age: int) -> str:
+     if 7 <= age <= 18:
+         return "Oled 7-18 aastane"
+     return "Oled noorem või vanem kui 7-18 aastased"
+
+if __name__ == "__main__":
+    name = input("Sisesta oma nimi: ")
+    age = int(input("Sissesta oma vanus aastates täisarvuna: "))
+    greeting = greet_by_name(name)
+    age_text = verify_age(age)
+    print(greeting, age_text, sep="\n")
+
+"Koosta lihtne kalkulaator. Kasutajalt küsitakse kaks arvu ja tehtemärk ning seejärel kuvatakse tehe koos vastusega"
+
+def calculate(num1: float, num2: float, operation: str) -> str:
+    result = ""
+        if operation == "+":
+            result = num1 + num2
+        elif operation == "-":
+            result = num1 - num2
+        elif operation == "*":
+            result = num1 * num2
+        elif operation == "/":
+            result = num1 / num2
+        elif operation == "//":
+            result = num1 // num2
+        elif operation == "**":
+            result = num1 ** num2
+        elif operation == "%":
+            result = num1 % num2
+        return f"{num1}+{num2}={result}"
+
+
+if __name__ == "__name__":
+    first = float(input("Sisesta esimene arv: "))
+    second = float(input("Sisestage teine arv: "))
+    op = input("Sisestage tehe: ")
+    print(f"Tulemus: {calculate(first, second, op)}")
+
