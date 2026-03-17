@@ -22,7 +22,7 @@ FILE = "phonebook.txt"
 
 
 def load_data():
-    """Loeb telefoniraamatu andmed failist."""
+    """Loeb telefoniraamatu andmed failist ja tagastab sõnastiku."""
     phonebook = {}
     try:
         with open(FILE, "r", encoding="utf-8") as f:
@@ -38,67 +38,75 @@ def save_data(phonebook):
     """Salvestab telefoniraamatu andmed faili."""
     with open(FILE, "w", encoding="utf-8") as f:
         for name, number in phonebook.items():
-            f.write(name + ";" + number + "\n")
+            f.write(f"{name};{number}\n")
 
 
 def add_contact(phonebook, name=None, number=None):
-    """Lisab uue kontakti telefoniraamatusse."""
+    """Lisab uue kontakti. Ühel nimel saab olla ainult üks number."""
     if name is None:
-        name = input("Name: ")
+        name = input("Sisesta nimi: ")
 
     if name in phonebook:
-        print("This name already exists.")
+        print("See nimi on juba olemas!")
         return
 
     if number is None:
-        number = input("Number: ")
+        number = input("Sisesta number: ")
 
     phonebook[name] = number
     save_data(phonebook)
-    print("Contact added.")
+    print("Kontakt lisatud.")
 
 
 def search_by_name(phonebook):
-    """Otsib numbri nime järgi."""
-    name = input("Enter name: ")
+    """Otsib numbri nime järgi. Kui ei leia, pakub lisamist."""
+    name = input("Sisesta nimi: ")
 
     if name in phonebook:
         print("Number:", phonebook[name])
     else:
-        print("Contact not found.")
-        choice = input("Add new contact? (y/n): ")
-        if choice.lower() == "y":
-            add_contact(phonebook, name)
+        print("Kontakti ei leitud.")
+        if input("Kas lisada uus kontakt? (j/e): ").lower() == "j":
+            add_contact(phonebook, name=name)
 
-    print("Number not found.")
-    choice = input("Add new contact? (y/n): ")
-    if choice.lower() == "y":
-        name = input("Enter name: ")
-        add_contact(phonebook, name, number)
+
+def search_by_number(phonebook):
+    """Otsib nime numbri järgi. Kui ei leia, pakub lisamist."""
+    number = input("Sisesta number: ")
+
+    for name, num in phonebook.items():
+        if num == number:
+            print("Nimi:", name)
+            return
+
+    print("Selle numbriga kontakti ei leitud.")
+    if input("Kas lisada uus kontakt? (j/e): ").lower() == "j":
+        add_contact(phonebook, number=number)
 
 
 def show_all(phonebook):
     """Kuvab kogu telefoniraamatu."""
     if not phonebook:
-        print("Phonebook is empty.")
+        print("Telefoniraamat on tühi.")
         return
 
+    print("\nTelefoniraamat:")
     for name, number in phonebook.items():
-        print(name, number)
+        print(f"{name}: {number}")
 
 
 def menu():
-    """Programmi menüü."""
+    """Kuvab menüü ja juhib programmi tööd."""
     phonebook = load_data()
 
     while True:
-        print("\n1 - Add contact")
-        print("2 - Search by name")
-        print("3 - Search by number")
-        print("4 - Show all contacts")
-        print("5 - Exit")
+        print("\n1 - Lisa kontakt")
+        print("2 - Otsi nime järgi")
+        print("3 - Otsi numbri järgi")
+        print("4 - Kuva kõik kontaktid")
+        print("5 - Välju")
 
-        choice = input("Choice: ")
+        choice = input("Valik: ")
 
         if choice == "1":
             add_contact(phonebook)
@@ -109,9 +117,10 @@ def menu():
         elif choice == "4":
             show_all(phonebook)
         elif choice == "5":
+            print("Programm lõpetatud.")
             break
         else:
-            print("Wrong choice")
+            print("Vale valik!")
 
 
 if __name__ == "__main__":
